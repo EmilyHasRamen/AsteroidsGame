@@ -1,15 +1,103 @@
 //your variable declarations here
+SpaceShip enterprise = new SpaceShip();
+Star stars[]= new Star[35];
+public final static int SCREENSIZE = 1000;
 public void setup() 
 {
   //your code here
+  size(1000,1000);
+  for (int n=0; n<stars.length; n++)
+  {
+    stars[n] = new Star();
+  }
+
+  enterprise.setX(500);
+  enterprise.setY(500);
+  enterprise.setDirectionX(0);
+  enterprise.setDirectionY(0);
+  enterprise.setPointDirection(0);
 }
 public void draw() 
 {
   //your code here
+ background(0);
+ for (int n=0; n<stars.length; n++)
+  {
+    stars[n].show();
+  }
+ enterprise.show();
+ enterprise.move();
+
 }
-class SpaceShip //extends Floater  
+public void keyPressed()
+{
+
+  if (key=='w' || key=='W'){enterprise.accelerate(1);}
+  if (key=='s' || key=='S'){enterprise.accelerate(-1);}
+  if (key=='a' || key=='A'){enterprise.rotate(-20);}
+  if (key=='d' || key=='D'){enterprise.rotate(20);}
+  if (key=='h' || key=='H'){enterprise.hyperSpace();}
+}
+
+class Star
+{
+  private int posX;
+  private int posY;
+  private int starColor;
+  private int starSize;
+  public Star()
+  {
+    posX = (int)(Math.random()*SCREENSIZE);
+    posY = (int)(Math.random()*SCREENSIZE);
+    starColor = (int)(Math.random()*255);
+    starSize = (int)(Math.random()*10)+1;
+  } 
+  public void show()
+  {
+    ellipse(posX, posY, starSize, starSize);
+  }
+}
+
+class SpaceShip extends Floater  
 {   
     //your code here
+   public SpaceShip() {
+// NO VOID IN CONSTRUCTOR  public void SpaceShip() {
+    corners = 4;
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+    xCorners[0] = -8;
+    yCorners[0] = -8;
+    xCorners[1] = 16;
+    yCorners[1] = 0;
+    xCorners[2] = -8;
+    yCorners[2] = 8;
+    xCorners[3] = -2;
+    yCorners[3] = 0;
+    myColor = 255;
+   }  
+
+public void hyperSpace() 
+{
+  setDirectionY(0);
+  setDirectionX(0);
+  setPointDirection((int)(Math.random()*360));
+  setX((int)(Math.random()*SCREENSIZE));
+  setY((int)(Math.random()*SCREENSIZE));
+}
+//   public int getCorners() {return corners;}
+//   public int getColor() {return myColor;}
+
+   public void setX(int x){myCenterX=x;}  
+   public int getX(){return (int) myCenterX;}   
+   public void setY(int y){myCenterY=y;}   
+   public int getY(){return (int) myCenterY;}   
+   public void setDirectionX(double x){myDirectionX=x;}   
+   public double getDirectionX(){return myDirectionX;}   
+   public void setDirectionY(double y){myDirectionY=y;}   
+   public double getDirectionY(){return myDirectionY;}   
+   public void setPointDirection(int degrees){myPointDirection=degrees;}   
+   public double getPointDirection(){return myPointDirection;} 
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -31,6 +119,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   abstract public void setPointDirection(int degrees);   
   abstract public double getPointDirection(); 
 
+
   //Accelerates the floater in the direction it is pointing (myPointDirection)   
   public void accelerate (double dAmount)   
   {          
@@ -50,6 +139,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
+
 
     //wrap around screen    
     if(myCenterX >width)
@@ -87,4 +177,3 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     endShape(CLOSE);  
   }   
 } 
-
