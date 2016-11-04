@@ -1,5 +1,7 @@
 //your variable declarations here
 SpaceShip enterprise = new SpaceShip();
+//Asteroid farts = new Asteroid();
+Asteroid farts[] = new Asteroid[5];
 Star stars[]= new Star[35];
 public final static int SCREENSIZE = 1000;
 public void setup() 
@@ -10,12 +12,17 @@ public void setup()
   {
     stars[n] = new Star();
   }
+  for (int n=0; n<farts.length; n++)
+  {
+    farts[n] = new Asteroid();
+  }
 
   enterprise.setX(500);
   enterprise.setY(500);
   enterprise.setDirectionX(0);
   enterprise.setDirectionY(0);
   enterprise.setPointDirection(0);
+
 }
 public void draw() 
 {
@@ -27,6 +34,13 @@ public void draw()
   }
  enterprise.show();
  enterprise.move();
+// farts.show();
+// farts.move();
+  for (int n=0; n<farts.length; n++)
+  {
+    farts[n].show();
+    farts[n].move();
+  }
 
 }
 public void keyPressed()
@@ -54,8 +68,56 @@ class Star
   } 
   public void show()
   {
+//    fill(starColor);   
+//    stroke(starColor);    
+    fill(255);   
+    stroke(255);    
     ellipse(posX, posY, starSize, starSize);
   }
+}
+
+class Asteroid extends Floater
+{
+   private int rotSpeed;
+   public Asteroid(){ 
+      rotSpeed = (int)(Math.random()*11)-5;
+      corners = 6;
+      xCorners = new int[corners];
+      yCorners = new int[corners];
+      xCorners[0] = -11;
+      yCorners[0] = -8;
+      xCorners[1] = 7;
+      yCorners[1] = -8;
+      xCorners[2] = 13;
+      yCorners[2] = 0;
+      xCorners[3] = 6;
+      yCorners[3] = 10;
+      xCorners[4] = -11;
+      yCorners[4] = 8;
+      xCorners[5] = -5;
+      yCorners[5] = 0;
+      super.myColor = 255;
+      super.myCenterX = (int)(Math.random()*SCREENSIZE);
+      super.myCenterY = (int)(Math.random()*SCREENSIZE);
+      super.myDirectionX = (int)(Math.random()*11)-5;
+      super.myDirectionY = (int)(Math.random()*11)-5;
+      super.myPointDirection = 0;
+   }
+   public void move(){
+    rotate(rotSpeed);
+    super.move();
+
+   }
+   public void setX(int x){myCenterX=x;}  
+   public int getX(){return (int) myCenterX;}   
+   public void setY(int y){myCenterY=y;}   
+   public int getY(){return (int) myCenterY;}   
+   public void setDirectionX(double x){myDirectionX=x;}   
+   public double getDirectionX(){return myDirectionX;}   
+   public void setDirectionY(double y){myDirectionY=y;}   
+   public double getDirectionY(){return myDirectionY;}   
+   public void setPointDirection(int degrees){myPointDirection=degrees;}   
+   public double getPointDirection(){return myPointDirection;} 
 }
 
 class SpaceShip extends Floater  
