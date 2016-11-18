@@ -62,7 +62,7 @@ public void draw()
     farts.get(n).show();
     farts.get(n).move();
     if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= 20) {
-System.out.println("collision alert: asteroid " + n);
+//System.out.println("collision alert: asteroid " + n);
       // add explosion at asteroid location
       bang.explode(farts.get(n).getX(), farts.get(n).getY());
       // remove asteroid
@@ -120,7 +120,7 @@ class Explosion
     started = false;
     myCenterX = 0;
     myCenterY = 0;
-System.out.println("Explosion(N): x=" + myCenterX + ", y=" + myCenterY);
+//System.out.println("Explosion(N): x=" + myCenterX + ", y=" + myCenterY);
   }
   public Explosion(int x, int y)
   {
@@ -155,7 +155,7 @@ System.out.println("Explosion(Y): x=" + myCenterX + ", y=" + myCenterY);
 */
       sparksList.add(sparkle);
     }
-System.out.println("Explosion(Y): sparksList size=" + sparksList.size());
+//System.out.println("Explosion(Y): sparksList size=" + sparksList.size());
   }
   /*
   private boolean isExploding;
