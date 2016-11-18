@@ -139,7 +139,7 @@ class Explosion
     started = true;
     myCenterX = (double)x;
     myCenterY = (double)y;
-System.out.println("Explosion(Y): x=" + myCenterX + ", y=" + myCenterY);
+//System.out.println("Explosion(Y): x=" + myCenterX + ", y=" + myCenterY);
 //    sparkList = new ArrayList <Spark>();
     sparksList = new ArrayList <NormalParticle>();
     for (int n=0; n<20; n++) {
