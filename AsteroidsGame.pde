@@ -1,7 +1,18 @@
+/* 
+To Do:
+Outline for the Spaceship 
+Arraylist astroids
+Have two Asteroids classes, one large and one small. When a large Asteroid is removed from the ArrayList add two small ones with the same x and y 
+Bullets
+*/
+
 //your variable declarations here
 SpaceShip enterprise = new SpaceShip();
 //Asteroid farts = new Asteroid();
-Asteroid farts[] = new Asteroid[5];
+//Asteroid farts[] = new Asteroid[20];
+ArrayList <Asteroid> farts = new ArrayList <Asteroid>();
+
+
 Star stars[]= new Star[35];
 Explosion bang;
 public final static int SCREENSIZE = 1000;
@@ -14,11 +25,18 @@ public void setup()
   {
     stars[n] = new Star();
   }
+  /*
   for (int n=0; n<farts.length; n++)
   {
     farts[n] = new Asteroid();
   }
+  */
   bang = new Explosion();
+
+  for (int n = 0; n<20; n++)
+  {
+    farts.add(new Asteroid());
+  }
 
   enterprise.setX(500);
   enterprise.setY(500);
@@ -37,15 +55,18 @@ public void draw()
   }
   enterprise.show();
   enterprise.move();
-  for (int n=0; n<farts.length; n++)
+
+
+  for (int n=farts.size()-1; n>=0; n--)
   {
-    farts[n].show();
-    farts[n].move();
-    if (dist(farts[n].getX(), farts[n].getY(), enterprise.getX(), enterprise.getY()) <= 20) {
+    farts.get(n).show();
+    farts.get(n).move();
+    if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= 20) {
 System.out.println("collision alert: asteroid " + n);
       // add explosion at asteroid location
-      bang.explode(farts[n].getX(), farts[n].getY());
+      bang.explode(farts.get(n).getX(), farts.get(n).getY());
       // remove asteroid
+      farts.remove(n);
     }
   }
   // explosions
