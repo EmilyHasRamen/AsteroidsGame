@@ -11,7 +11,9 @@ SpaceShip enterprise = new SpaceShip();
 //Asteroid farts = new Asteroid();
 //Asteroid farts[] = new Asteroid[20];
 ArrayList <Asteroid> farts = new ArrayList <Asteroid>();
+ArrayList <Bullet> poops = new ArrayList <Bullet>();
 
+//  Bullets poops = new Bullets();
 
 Star stars[]= new Star[35];
 Explosion bang;
@@ -43,25 +45,51 @@ public void setup()
   enterprise.setDirectionX(0);
   enterprise.setDirectionY(0);
   enterprise.setPointDirection(0);
+
+
+
 }
 
 public void draw() 
 {
   //your code here
   background(0);
+
+  // draw stars
   for (int n=0; n<stars.length; n++)
   {
     stars[n].show();
   }
+
+  // draw spaceship
   enterprise.show();
   enterprise.move();
 
+  // draw bullets
+  for (int n=poops.size()-1; n>=0; n--)
+  {
+    poops.get(n).show();
+    poops.get(n).move();
+  }
 
+  // draw asteroids
+  double collisionDistance = 0;
   for (int n=farts.size()-1; n>=0; n--)
   {
     farts.get(n).show();
     farts.get(n).move();
-    if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= 20) {
+    switch(farts.get(n).getSize()) {
+      case 2:   // large
+        collisionDistance = 40;
+        break;
+      case 1:   // medium
+        collisionDistance = 30;
+        break;
+      default:  // small
+        collisionDistance = 20;
+        break;
+    }
+    if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= collisionDistance) {
 //System.out.println("collision alert: asteroid " + n);
       // add explosion at asteroid location
       bang.explode(farts.get(n).getX(), farts.get(n).getY());
@@ -69,7 +97,8 @@ public void draw()
       farts.remove(n);
     }
   }
-  // explosions
+
+  // draw explosion
   if (bang.isStarted()) {
     bang.show();
   }
@@ -83,6 +112,7 @@ public void keyPressed()
   if (key=='a' || key=='A'){enterprise.rotate(-20);}      // left
   if (key=='d' || key=='D'){enterprise.rotate(20);}       // right
   if (key=='h' || key=='H'){enterprise.hyperSpace();}     // hyperspace
+  if (key==' '){poops.add(new Bullet(enterprise));}       // fire bullet
 }
 
 class Star
@@ -184,8 +214,8 @@ class Explosion
 
 class NormalParticle implements Particle
 {
-  double dSpeed, dX, dY, dTheta;
-    NormalParticle()
+  protected double dSpeed, dX, dY, dTheta;
+    public NormalParticle()
     {
       dX = SCREENSIZE/2;
       dY = SCREENSIZE/2;
@@ -197,13 +227,13 @@ class NormalParticle implements Particle
       dY = y;
       setParticle();
     }
-    void setParticle()
+    public void setParticle()
     {
       dSpeed = (Math.random()*10)+2;
       dTheta = Math.PI*2*Math.random();
     }
 
-    void move()
+    public void move()
     {
       dX = dX+(Math.cos(dTheta)*dSpeed);
       dY = dY+(Math.sin(dTheta)*dSpeed);
@@ -212,13 +242,13 @@ class NormalParticle implements Particle
 //        setParticle();
 //      }
     }
-    void show()
+    public void show()
     {
       fill(255);
       ellipse((float)dX, (float)dY, 1, 1);
     }
     
-    void hide()
+    public void hide()
     {
       fill(0);
       ellipse((float)dX, (float)dY, 1, 1);
@@ -286,6 +316,7 @@ class Asteroid extends Floater
 {
   private int rotSpeed;
   private int nSize; // 0=small, 1=medium, 2=large;
+
   public Asteroid(){ 
     rotSpeed = (int)(Math.random()*11)-5;
 /*
@@ -305,8 +336,8 @@ class Asteroid extends Floater
     xCorners[5] = -5;
     yCorners[5] = 0;
 */
-    int nSize, xRadius, yRadius;
-    nSize = (int)(Math.random()*3);
+    int xRadius, yRadius;
+    nSize = (int)(Math.random()*3);         // 0=small, 1=medium, 2=large;
     if (nSize == 0) {
       xRadius = (int)(Math.random()*6)+10;  // 10 to 15
       yRadius = (int)(Math.random()*6)+10;  // 10 to 15
@@ -358,6 +389,8 @@ class Asteroid extends Floater
   public double getDirectionY(){return myDirectionY;}   
   public void setPointDirection(int degrees){myPointDirection=degrees;}   
   public double getPointDirection(){return myPointDirection;} 
+
+  public int getSize(){return nSize;}   
 }
 
 class SpaceShip extends Floater  
