@@ -68,6 +68,32 @@ public void draw()
   // draw bullets
   for (int n=poops.size()-1; n>=0; n--)
   {
+    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+    if(poops.get(n).getX() >= width)
+    {     
+    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+      poops.remove(n);  
+      break;
+    }    
+    else if (poops.get(n).getX()<0)
+    {     
+    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+      poops.remove(n);  
+      break;
+    }    
+    if(poops.get(n).getY() >=height)
+    {    
+    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+      poops.remove(n);  
+      break;
+    }   
+    else if (poops.get(n).getY() < 0)
+    {     
+    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+      poops.remove(n);  
+      break;
+
+    }   
     poops.get(n).show();
     poops.get(n).move();
   }
@@ -95,6 +121,16 @@ public void draw()
       bang.explode(farts.get(n).getX(), farts.get(n).getY());
       // remove asteroid
       farts.remove(n);
+      break;
+    }
+    for(int i=poops.size()-1; i>=0; i--){
+      if(dist(farts.get(n).getX(), farts.get(n).getY(), poops.get(i).getX(), poops.get(i).getY()) <= collisionDistance){
+      bang.explode(farts.get(n).getX(), farts.get(n).getY());
+      // remove asteroid
+      farts.remove(n);
+      poops.remove(i);
+      break;
+      }
     }
   }
 
@@ -409,8 +445,8 @@ class SpaceShip extends Floater
     yCorners[2] = 8;
     xCorners[3] = -2;
     yCorners[3] = 0;
-    myColor = 255;
-   }  
+    myColor = color(0, 255, 0);
+  }
 
   public void hyperSpace() 
   {
