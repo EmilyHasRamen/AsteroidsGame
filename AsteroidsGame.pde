@@ -36,10 +36,10 @@ public void setup()
   bang = new Explosion();
 
   for (int n = 0; n<20; n++)
-  {
+    {
     farts.add(new Asteroid());
-  }
-
+    }
+    
   enterprise.setX(500);
   enterprise.setY(500);
   enterprise.setDirectionX(0);
@@ -68,7 +68,7 @@ public void draw()
   // draw bullets
   for (int n=poops.size()-1; n>=0; n--)
   {
-    System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
+    /*System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
     if(poops.get(n).getX() >= width)
     {     
     System.out.println("("+poops.get(n).getX()+","+poops.get(n).getY()+") width =" + width +", height =" + height);
@@ -93,7 +93,8 @@ public void draw()
       poops.remove(n);  
       break;
 
-    }   
+    } 
+    */  
     poops.get(n).show();
     poops.get(n).move();
   }
@@ -115,20 +116,43 @@ public void draw()
         collisionDistance = 20;
         break;
     }
-    if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= collisionDistance) {
-//System.out.println("collision alert: asteroid " + n);
-      // add explosion at asteroid location
-      bang.explode(farts.get(n).getX(), farts.get(n).getY());
-      // remove asteroid
-      farts.remove(n);
-      break;
-    }
+    if (dist(farts.get(n).getX(), farts.get(n).getY(), enterprise.getX(), enterprise.getY()) <= collisionDistance) 
+      {
+        //System.out.println("collision alert: asteroid " + n);
+        // add explosion at asteroid location
+        bang.explode(farts.get(n).getX(), farts.get(n).getY());
+        // remove asteroid
+        farts.remove(n);
+        enterprise.setHealth(enterprise.getHealth()-1);
+        System.out.println("HealthPoints ="+ enterprise.getHealth());
+        break;
+
+      }
     for(int i=poops.size()-1; i>=0; i--){
       if(dist(farts.get(n).getX(), farts.get(n).getY(), poops.get(i).getX(), poops.get(i).getY()) <= collisionDistance){
       bang.explode(farts.get(n).getX(), farts.get(n).getY());
       // remove asteroid
-      farts.remove(n);
-      poops.remove(i);
+              switch(farts.get(n).getSize())
+        {
+        case 2:   // large
+          farts.add(new Asteroid(0,farts.get(n).getX(),farts.get(n).getY()));
+          farts.add(new Asteroid(0,farts.get(n).getX(),farts.get(n).getY()));
+          System.out.println("Farts size:"+farts.size());
+          farts.remove(n);
+          poops.remove(i);
+          break;
+        case 1:   // medium
+          farts.remove(n);
+          poops.remove(i);
+          break;
+        default:  // small
+          farts.remove(n);
+          poops.remove(i);
+          break;
+        }
+
+      //farts.remove(n);
+      
       break;
       }
     }
@@ -140,13 +164,13 @@ public void draw()
   }
 }
 
-public void keyPressed()
-{
+public void keyPressed() {
+  
 //System.out.println("key=" + KeyEvent.getKeyCode());
-  if (key=='w' || key=='W'){enterprise.accelerate(1);}    // up
-  if (key=='s' || key=='S'){enterprise.accelerate(-1);}   // down
-  if (key=='a' || key=='A'){enterprise.rotate(-20);}      // left
-  if (key=='d' || key=='D'){enterprise.rotate(20);}       // right
+  if (key=='w' || key=='W'){enterprise.accelerate(0.5);}    // up
+  if (key=='s' || key=='S'){enterprise.accelerate(-0.5);}   // down
+  if (key=='a' || key=='A'){enterprise.rotate(-30);}      // left
+  if (key=='d' || key=='D'){enterprise.rotate(30);}       // right
   if (key=='h' || key=='H'){enterprise.hyperSpace();}     // hyperspace
   if (key==' '){poops.add(new Bullet(enterprise));}       // fire bullet
 }
@@ -281,12 +305,14 @@ class NormalParticle implements Particle
     public void show()
     {
       fill(255);
+      stroke(255);    
       ellipse((float)dX, (float)dY, 1, 1);
     }
     
     public void hide()
     {
       fill(0);
+      stroke(0);    
       ellipse((float)dX, (float)dY, 1, 1);
     }
 
@@ -353,27 +379,13 @@ class Asteroid extends Floater
   private int rotSpeed;
   private int nSize; // 0=small, 1=medium, 2=large;
 
-  public Asteroid(){ 
+  public void newAsteroid(int nSize)
+  { 
     rotSpeed = (int)(Math.random()*11)-5;
-/*
-    corners = 6;
-    xCorners = new int[corners];
-    yCorners = new int[corners];
-    xCorners[0] = -11;
-    yCorners[0] = -8;
-    xCorners[1] = 7;
-    yCorners[1] = -8;
-    xCorners[2] = 13;
-    yCorners[2] = 0;
-    xCorners[3] = 6;
-    yCorners[3] = 10;
-    xCorners[4] = -11;
-    yCorners[4] = 8;
-    xCorners[5] = -5;
-    yCorners[5] = 0;
-*/
+
+
     int xRadius, yRadius;
-    nSize = (int)(Math.random()*3);         // 0=small, 1=medium, 2=large;
+    //nSize = (int)(Math.random()*3);         // 0=small, 1=medium, 2=large;
     if (nSize == 0) {
       xRadius = (int)(Math.random()*6)+10;  // 10 to 15
       yRadius = (int)(Math.random()*6)+10;  // 10 to 15
@@ -409,8 +421,24 @@ class Asteroid extends Floater
       super.myDirectionY = (int)(Math.random()*11)-5;
       super.myPointDirection = 0;
   }
+
+  public Asteroid()
+  { 
+    nSize = (int)(Math.random()*3);         // 0=small, 1=medium, 2=large;
+    newAsteroid(nSize);
+  }
   
-  public void move(){
+  public Asteroid(int mySize, double myCenterX, double myCenterY)
+  { 
+    nSize = mySize;
+
+    newAsteroid(nSize);
+    super.myCenterX = myCenterX;
+    super.myCenterY = myCenterY;
+  }
+
+  public void move()
+  {
     rotate(rotSpeed);
     super.move();
   }
@@ -432,6 +460,7 @@ class Asteroid extends Floater
 class SpaceShip extends Floater  
 {   
     //your code here
+   private int myHealthPoints = 8; 
    public SpaceShip() {
 // NO VOID IN CONSTRUCTOR  public void SpaceShip() {
     corners = 4;
@@ -447,7 +476,15 @@ class SpaceShip extends Floater
     yCorners[3] = 0;
     myColor = color(0, 255, 0);
   }
+  public void setHealth(int healthPoints)
+  {
+    myHealthPoints = healthPoints;
+  }
 
+  public int getHealth()
+  {
+    return myHealthPoints;
+  }
   public void hyperSpace() 
   {
     setDirectionY(0);

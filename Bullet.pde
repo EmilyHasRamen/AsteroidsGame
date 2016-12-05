@@ -30,11 +30,21 @@ class Bullet extends Floater
 	public void setPointDirection(int degrees){myPointDirection=degrees;}   
 	public double getPointDirection(){return myPointDirection;} 
 
+
 	public void show ()  //Draws the floater at the current position  
 	{             
 	  fill(myColor);   
 	  stroke(myColor);    
       ellipse((float)myCenterX, (float)myCenterY, 5, 5);
+    }
+      public void move ()   //move the floater in the current direction of travel
+  	{      
+    //change the x and y coordinates by myDirectionX and myDirectionY       
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+	}
+
+
 /*
 	  //convert degrees to radians for sin and cos         
 	  double dRadians = myPointDirection*(Math.PI/180);                 
@@ -49,7 +59,7 @@ class Bullet extends Floater
 	  }   
 	  endShape(CLOSE);  
 */
-	}   
+	   
 
 }
 
