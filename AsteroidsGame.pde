@@ -124,7 +124,7 @@ public void draw()
         // remove asteroid
         farts.remove(n);
         enterprise.setHealth(enterprise.getHealth()-1);
-        System.out.println("HealthPoints ="+ enterprise.getHealth());
+        //System.out.println("HealthPoints ="+ enterprise.getHealth());
         break;
 
       }
