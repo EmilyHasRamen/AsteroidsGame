@@ -161,7 +161,7 @@ public void draw()
         case 2:   // large
           farts.add(new Asteroid(0,farts.get(n).getX(),farts.get(n).getY()));
           farts.add(new Asteroid(0,farts.get(n).getX(),farts.get(n).getY()));
-          System.out.println("Farts size:"+farts.size());
+          //System.out.println("Farts size:"+farts.size());
           farts.remove(n);
           poops.remove(i);
           break;
