@@ -46,6 +46,30 @@ public void setup()
   enterprise.setDirectionY(0);
   enterprise.setPointDirection(0);
 
+/*
+      System.out.println(1/(double)2*3);
+      int[] array1 = {0,1,2,3,4,5};
+      int[] array2; array2 = new int[6];
+      for (int n=0; n<6; n++) {array2[n] = n;}
+      int[] array3 = new int[6];
+      ArrayList <Integer> theList = new ArrayList <Integer>();
+      for (int nI =1; nI < 20; nI=nI*2)
+      {
+        theList.add(nI);
+      }
+      System.out.println(theList);
+      theList.add(2, new Integer(100));
+      System.out.println(theList);
+      String[] colors = {"red", "green", "black"};
+      //System.out.println(colors.get(1));
+      //int nI = 4;
+      //nI--;
+      Boolean boo = true;
+      boo = (1<3) || (3/0<1);
+      System.out.println( boo );
+      boo = (1<3) && (3/0<1);
+      System.out.println( boo );
+*/
 
 
 }
